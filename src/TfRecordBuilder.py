@@ -8,17 +8,17 @@ import tensorflow as tf
 from PIL import Image
 
 
-SIZE = 256
+SIZE = 64
 
 if platform == 'win32':
     FACES_PATH = 'D:/Temp/PublicMM1/matlab/input crop'
     FEATURES_PATH = 'D:/Temp/PublicMM1/matlab/labels'
-    TF_RECORD_PATH = 'D:/Temp/TfRecords'
+    TF_RECORD_PATH = f'D:/Temp/TfRecords_{SIZE}'
     CLEAR = 'cls'
 elif platform == 'linux':
     FACES_PATH = '/home/jscholz/Code/pic23d/data/input crop'
     FEATURES_PATH = '/home/jscholz/Code/pic23d/data/labels'
-    TF_RECORD_PATH = '/home/jscholz/Code/pic23d/data/TfRecords'
+    TF_RECORD_PATH = f'/home/jscholz/Code/pic23d/data/TfRecords_{SIZE}'
     CLEAR = 'clear'
 
 
@@ -77,13 +77,13 @@ def create_tfrecord():
     for i, feat in enumerate(features):
         if not i % 50:
             os.system(CLEAR)
-            print(f'writing: {TF_RECORD_PATH}/Dataset_{SIZE}_{i//max_files:06d}.tfrecords')
+            print(f'writing: {TF_RECORD_PATH}/Dataset_{i//max_files:06d}.tfrecords')
             print(f'data: {i}/{num_files}')
         if not i % max_files:
             if writer is not None:
                 writer.close()
             writer = tf.python_io.TFRecordWriter(
-                f'{TF_RECORD_PATH}/Dataset_{SIZE}_{i//max_files:06d}.tfrecords')
+                f'{TF_RECORD_PATH}/Dataset_{i//max_files:06d}.tfrecords')
 
         img, label = feat
 
